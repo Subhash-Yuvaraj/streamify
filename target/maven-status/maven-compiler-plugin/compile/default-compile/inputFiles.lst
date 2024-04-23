@@ -1,0 +1,11 @@
+/home/subhash.yuvaraj/streamify/src/main/java/com/audiophile/streamify/service/impl/UserServiceImpl.java
+/home/subhash.yuvaraj/streamify/src/main/java/com/audiophile/streamify/model/AuthRequest.java
+/home/subhash.yuvaraj/streamify/src/main/java/com/audiophile/streamify/StreamifyApplication.java
+/home/subhash.yuvaraj/streamify/src/main/java/com/audiophile/streamify/model/Role.java
+/home/subhash.yuvaraj/streamify/src/main/java/com/audiophile/streamify/config/SecurityConfiguration.java
+/home/subhash.yuvaraj/streamify/src/main/java/com/audiophile/streamify/service/impl/JWTServiceImpl.java
+/home/subhash.yuvaraj/streamify/src/main/java/com/audiophile/streamify/service/UserService.java
+/home/subhash.yuvaraj/streamify/src/main/java/com/audiophile/streamify/model/User.java
+/home/subhash.yuvaraj/streamify/src/main/java/com/audiophile/streamify/config/JWTAuthenticationFilter.java
+/home/subhash.yuvaraj/streamify/src/main/java/com/audiophile/streamify/repository/UserRepository.java
+/home/subhash.yuvaraj/streamify/src/main/java/com/audiophile/streamify/service/JWTService.java
