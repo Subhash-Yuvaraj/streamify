@@ -2,16 +2,14 @@ package com.audiophile.streamify.controller;
 
 import com.audiophile.streamify.dto.JWTAuthenticationResponse;
 import com.audiophile.streamify.dto.RefreshTokenRequest;
-import com.audiophile.streamify.dto.SigninRequest;
-import com.audiophile.streamify.dto.SignupRequest;
+import com.audiophile.streamify.dto.SigninRequestDTO;
+import com.audiophile.streamify.dto.SignupRequestDTO;
 import com.audiophile.streamify.model.User;
 import com.audiophile.streamify.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -19,19 +17,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
+
+
     @PostMapping("/signup-listener")
-    public ResponseEntity<User> signupListener(@RequestBody SignupRequest signupRequest){
-        return ResponseEntity.ok(authenticationService.signupListener(signupRequest));
+    public ResponseEntity<User> signupListener(@RequestBody SignupRequestDTO signupRequestDTO){
+        return ResponseEntity.ok(authenticationService.signupListener(signupRequestDTO));
     }
 
     @PostMapping("/signup-artist")
-    public ResponseEntity<User> signupArtist(@RequestBody SignupRequest signupRequest){
-        return ResponseEntity.ok(authenticationService.signupArtist(signupRequest));
+    public ResponseEntity<User> signupArtist(@RequestBody SignupRequestDTO signupRequestDTO){
+        return ResponseEntity.ok(authenticationService.signupArtist(signupRequestDTO));
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<JWTAuthenticationResponse> signin(@RequestBody SigninRequest signinRequest){
-        return ResponseEntity.ok(authenticationService.signin(signinRequest));
+    public ResponseEntity<JWTAuthenticationResponse> signin(@RequestBody SigninRequestDTO signinRequestDTO){
+        return ResponseEntity.ok(authenticationService.signin(signinRequestDTO));
     }
 
     @PostMapping("/refresh")

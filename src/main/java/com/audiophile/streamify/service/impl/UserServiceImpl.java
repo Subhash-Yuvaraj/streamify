@@ -4,6 +4,8 @@ import com.audiophile.streamify.model.User;
 import com.audiophile.streamify.repository.UserRepository;
 import com.audiophile.streamify.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,16 +16,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository ;
-    @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
 
-    @Override
-    public boolean checkUserEmail(String email) {
-        Optional<User> user = userRepository.findByEmail(email);
-        return user.isPresent();
-    }
 
     @Override
     public UserDetailsService userDetailsService() {
@@ -34,5 +27,15 @@ public class UserServiceImpl implements UserService {
                         .orElseThrow(()-> new UsernameNotFoundException("No user found"));
             }
         };
+    }
+
+    @Override
+    public User getLogginUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Optional<User> user = userRepository.findByEmail(email);
+        if(user.isEmpty())
+            throw new RuntimeException("Invalid user");
+        return user.get();
     }
 }

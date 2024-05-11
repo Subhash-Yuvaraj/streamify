@@ -2,16 +2,16 @@ package com.audiophile.streamify.service;
 
 import com.audiophile.streamify.dto.JWTAuthenticationResponse;
 import com.audiophile.streamify.dto.RefreshTokenRequest;
-import com.audiophile.streamify.dto.SigninRequest;
-import com.audiophile.streamify.dto.SignupRequest;
+import com.audiophile.streamify.dto.SigninRequestDTO;
+import com.audiophile.streamify.dto.SignupRequestDTO;
 import com.audiophile.streamify.model.User;
 
 public interface AuthenticationService {
-    User signupArtist(SignupRequest signupRequest);
+    User signupArtist(SignupRequestDTO signupRequestDTO);
 
-    User signupListener(SignupRequest signupRequest);
+    User signupListener(SignupRequestDTO signupRequestDTO);
 
-    JWTAuthenticationResponse signin(SigninRequest signinRequest);
+    JWTAuthenticationResponse signin(SigninRequestDTO signinRequestDTO);
 
     JWTAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
 }

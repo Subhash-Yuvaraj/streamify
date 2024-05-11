@@ -1,6 +1,5 @@
 package com.audiophile.streamify.service;
 
-import com.audiophile.streamify.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Map;
@@ -12,5 +11,5 @@ public interface JWTService {
 
     boolean isTokenValid(String token, UserDetails userDetails);
 
-    Object generateRefershToken(Map<String, Object> claims, UserDetails userDetails);
+    Object generateRefreshToken(Map<String, Object> claims, UserDetails userDetails);
 }

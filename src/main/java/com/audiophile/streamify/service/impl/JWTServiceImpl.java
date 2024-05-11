@@ -1,12 +1,13 @@
 package com.audiophile.streamify.service.impl;
 
-import com.audiophile.streamify.model.User;
 import com.audiophile.streamify.service.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JWTServiceImpl implements JWTService {
+    private final Environment environment;
     @Override
     public String generateToken(UserDetails userDetails){
         return Jwts.builder().setSubject(userDetails.getUsername())
@@ -26,17 +29,17 @@ public class JWTServiceImpl implements JWTService {
                 .compact();
     }
     private Key getSignKey(){
-        byte[] key = Decoders.BASE64.decode("413F4428472B4B6250655368566D5970337336763979244226452948404D6351");
+        byte[] key = Decoders.BASE64.decode(environment.getProperty("JWT_KEY"));
         return Keys.hmacShaKeyFor(key);
 
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers){
-        final Claims claims = extractAllClaimss(token);
+        final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
     }
 
-    private Claims extractAllClaimss(String token) {
+    private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody();
     }
     @Override
@@ -50,7 +53,7 @@ public class JWTServiceImpl implements JWTService {
     }
 
     @Override
-    public Object generateRefershToken(Map<String,Object> Claims, UserDetails userDetails) {
+    public Object generateRefreshToken(Map<String,Object> Claims, UserDetails userDetails) {
         return Jwts.builder().setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration((new Date(System.currentTimeMillis()+ 604800000)))

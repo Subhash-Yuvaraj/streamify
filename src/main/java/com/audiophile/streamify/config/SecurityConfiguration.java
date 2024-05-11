@@ -1,6 +1,6 @@
 package com.audiophile.streamify.config;
 
-import com.audiophile.streamify.model.Role;
+import com.audiophile.streamify.enums.Role;
 import com.audiophile.streamify.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +31,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/**")
                         .permitAll()
                         .requestMatchers("/api/v1/artist/**").hasAnyAuthority(Role.ARTIST.name())
-                        .requestMatchers("/api/v1/listener/**").hasAnyAuthority(Role.LISTENER.name())
+                        .requestMatchers("/api/v1/listener/**").hasAnyAuthority(Role.LISTENER.name(),Role.ARTIST.name())
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(

@@ -1,15 +1,15 @@
 package com.audiophile.streamify.service.impl;
 import com.audiophile.streamify.dto.JWTAuthenticationResponse;
 import com.audiophile.streamify.dto.RefreshTokenRequest;
-import com.audiophile.streamify.dto.SigninRequest;
-import com.audiophile.streamify.dto.SignupRequest;
-import com.audiophile.streamify.model.Role;
+import com.audiophile.streamify.dto.SigninRequestDTO;
+import com.audiophile.streamify.dto.SignupRequestDTO;
+import com.audiophile.streamify.enums.Role;
 import com.audiophile.streamify.model.User;
 import com.audiophile.streamify.repository.UserRepository;
 import com.audiophile.streamify.service.AuthenticationService;
 import com.audiophile.streamify.service.JWTService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,35 +25,36 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
+
     @Override
-    public User signupArtist(SignupRequest signupRequest) {
+    public User signupArtist(SignupRequestDTO signupRequestDTO) {
         User user = new User();
-        user.setEmail(signupRequest.getEmail());
-        user.setName(signupRequest.getName());
+        user.setEmail(signupRequestDTO.getEmail());
+        user.setName(signupRequestDTO.getName());
         user.setRole(Role.ARTIST);
-        user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+        user.setPassword(passwordEncoder.encode(signupRequestDTO.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
-    public User signupListener(SignupRequest signupRequest){
+    public User signupListener(SignupRequestDTO signupRequestDTO){
         User user = new User();
-        user.setEmail(signupRequest.getEmail());
-        user.setName(signupRequest.getName());
+        user.setEmail(signupRequestDTO.getEmail());
+        user.setName(signupRequestDTO.getName());
         user.setRole(Role.LISTENER);
-        user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+        user.setPassword(passwordEncoder.encode(signupRequestDTO.getPassword()));
         return userRepository.save(user);
     }
     @Override
-    public JWTAuthenticationResponse signin(SigninRequest signinRequest){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getEmail()
-        ,signinRequest.getPassword()));
-        Optional<User> user = userRepository.findByEmail(signinRequest.getEmail());
+    public JWTAuthenticationResponse signin(SigninRequestDTO signinRequestDTO){
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequestDTO.getEmail()
+        , signinRequestDTO.getPassword()));
+        Optional<User> user = userRepository.findByEmail(signinRequestDTO.getEmail());
         if(!user.isPresent())
             throw new IllegalArgumentException("Invalid email or password");
         User userObj = user.get();
         var jwt = jwtService.generateToken(userObj);
-        var refreshToken = jwtService.generateRefershToken(new HashMap<>(), userObj);
+        var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), userObj);
         JWTAuthenticationResponse jwtAuthenticationResponse = new JWTAuthenticationResponse();
         jwtAuthenticationResponse.setRefreshToken((String) refreshToken);
         jwtAuthenticationResponse.setToken(jwt);

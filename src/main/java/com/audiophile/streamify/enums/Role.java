@@ -1,4 +1,4 @@
-package com.audiophile.streamify.model;
+package com.audiophile.streamify.enums;
 
 public enum Role {
     LISTENER,

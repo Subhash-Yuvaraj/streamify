@@ -3,8 +3,7 @@ package com.audiophile.streamify.dto;
 import lombok.Data;
 
 @Data
-public class SignupRequest {
-    private String email;
+public class SigninRequestDTO {
     private String password;
-    private String name;
+    private String email;
 }
